@@ -97,6 +97,7 @@ Upload app to server:
     2) ekstak file build :  tar -xvf build.tgz
     3) remove file build:   rm build.tgz
 
+ansible-playbook --inventory inventory.yml --user vagrant --private-key <private key> playbook.yml
 curl cheat.sh/<command>
 env | grep DB_NAME
 cd  /etc/systemd/system
@@ -105,3 +106,6 @@ cd /home/vagrant/app/food_app
 sudo systemctl daemon-reload
 sudo systemctl start sinatra.service
 sudo systemctl status sinatra.service
+travis login --github-token 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 --com
+travis encrypt-file ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIhfHv51PD8Ix+P4lVXkcrSILDE5v+8ZVirxHtgC+QrE ilhamsurya.m@gmail.com --add --com
+- chmod 400 ~/.ssh/id_ed25519

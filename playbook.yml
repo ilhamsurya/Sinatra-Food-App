@@ -1,0 +1,86 @@
+- hosts: all
+  tasks:
+    - name: My SQL instalattion
+      become: yes
+      apt:
+        autoclean: yes
+        autoremove: yes
+        install_recommends: no
+        only_upgrade: yes
+        name:
+          - build-essential
+          - libssl-dev
+          - zlib1g-dev
+          - mysql-server
+          - libmysqlclient-dev
+          - python3-pymysql
+    - name: Installing rbenv
+      git:
+        dest: /home/vagrant/.rbenv
+        repo: https://github.com/rbenv/rbenv.git
+    - name: Installing ruby build
+      git:
+        dest: /home/vagrant/.rbenv/plugins/ruby-build
+        repo: https://github.com/rbenv/ruby-build.git
+    - name: Installing rbenv vars
+      git:
+        dest: /home/vagrant/.rbenv/plugins/rbenv-vars
+        repo: https://github.com/rbenv/rbenv-vars.git
+    - name: Exporting rbenv path
+      shell: echo 'export PATH="/home/vagrant/.rbenv/bin:$PATH"' >> /home/vagrant/.bashrc
+    - name: Exporting rbenv eval
+      shell: echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bashrc
+    - name: Exporting ruby-build path
+      shell: echo 'export PATH="/home/vagrant/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/vagrant/.bashrc
+    - name: Executing shell
+      shell: exec $SHELL
+    - name: Installing ruby 2.7.4
+      shell: /home/vagrant/.rbenv/bin/rbenv install 2.7.4
+    - name: Setting ruby 2.7.4 as global
+      shell: /home/vagrant/.rbenv/bin/rbenv global 2.7.4
+    - name: Installing all
+      shell: /home/vagrant/.rbenv/shims/gem install mysql2 sinatra thin
+    - name: Extracting bundle.tar.gz file
+      shell:
+        chdir: /home/vagrant/app
+        cmd: tar -xvf bundle.tar.gz
+    - name: Removing bundle.tar.gz file
+      file:
+        path: /home/vagrant/app/bundle.tar.gz
+        state: absent
+    - name: Creating database user 'vagrant' and password 'vagrant' with all privileges
+      become: yes
+      mysql_user:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: vagrant
+        password: vagrant
+        priv: "*.*:ALL"
+    - name: Creating database 'food_oms'
+      mysql_db:
+        login_password: vagrant
+        login_user: vagrant
+        name: food_oms
+    - name: Importing 'food_oms.sql'
+      mysql_db:
+        login_password: vagrant
+        login_user: vagrant
+        name: food_oms
+        state: import
+        target: /home/vagrant/app/food_oms.sql
+    - name: Copying 'sinatra.service' file to /etc/systemd/system
+      become: yes
+      shell:
+        chdir: /home/vagrant/app
+        cmd: cp sinatra.service /etc/systemd/system
+    - name: Removing 'sinatra.service' file
+      file:
+        path: /home/vagrant/app/sinatra.service
+        state: absent
+    - name: Enabling Sinatra application
+      systemd:
+        enabled: yes
+        name: sinatra
+    - name: Starting Sinatra application
+      systemd:
+        name: sinatra
+        state: started
