@@ -109,3 +109,5 @@ sudo systemctl status sinatra.service
 travis login --github-token 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 --com
 travis encrypt-file ~/.ssh/id_ed25519 --add --com 
 - chmod 400 ~/.ssh/id_ed25519.pub
+
+git remote add origin https://ilhamsurya:lolmastah27@github.com/ilhamsurya/Sinatra-Food-App.git
