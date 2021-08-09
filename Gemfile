@@ -3,3 +3,4 @@ gem "sinatra"
 gem "mysql2"
 gem "rspec"
 gem "simplecov"
+gem 'travis'
