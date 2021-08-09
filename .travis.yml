@@ -1,5 +1,5 @@
 language: python
-ruby: "-'2.7'"
+python: "2.7"
 branches:
   only:
     - main
@@ -7,3 +7,5 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_09d193dcd4c3_key -iv $encrypted_09d193dcd4c3_iv
     -in id_ed25519.enc -out ~\/.ssh/id_ed25519 -d
   - chmod 400 ~/.ssh/id_ed25519
+install:
+  - pip install ansible
