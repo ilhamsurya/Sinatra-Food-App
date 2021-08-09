@@ -91,9 +91,17 @@ TAR Command
     tar --exclude='./food_app/.bundle/' --exclude='./food_app/spec/model/coverage/' --exclude='./food_app/spec/controller/coverage/' --exclude='./food_app/.vagrant/' -cvzf build.tgz ./food_app
     2) Melihat daftar isi file tar
     tar -tvf build.tgz
-    3) 
 
 Upload app to server:
     1) scp -i C:/Users/ilham/Desktop/Habitat/generasigigih/Intermediate/food_app/.vagrant/machines/default/virtualbox/private_key C:/Users/ilham/Desktop/Habitat/generasigigih/Intermediate/build.tgz vagrant@192.168.20.21:/home/vagrant/app
     2) ekstak file build :  tar -xvf build.tgz
     3) remove file build:   rm build.tgz
+
+curl cheat.sh/<command>
+env | grep DB_NAME
+cd  /etc/systemd/system
+sudo vi sinatra.service
+cd /home/vagrant/app/food_app
+sudo systemctl daemon-reload
+sudo systemctl start sinatra.service
+sudo systemctl status sinatra.service

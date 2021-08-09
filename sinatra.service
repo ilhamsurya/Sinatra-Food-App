@@ -1,0 +1,12 @@
+
+[Unit]
+Description=Sinatra application
+
+[Service]
+User=root
+WorkingDirectory=/home/vagrant/app/food_app/
+ExecStart=/home/vagrant/.rbenv/shims/ruby index.rb
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
