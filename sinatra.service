@@ -4,7 +4,7 @@ Description=Sinatra application
 
 [Service]
 User=root
-WorkingDirectory=/home/vagrant/app/food_app/
+WorkingDirectory=/home/vagrant/app/
 ExecStart=/home/vagrant/.rbenv/shims/ruby index.rb
 Restart=on-failure
 
